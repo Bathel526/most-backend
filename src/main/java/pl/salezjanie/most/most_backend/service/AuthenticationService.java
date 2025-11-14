@@ -63,7 +63,19 @@ public class AuthenticationService {
     }
 
     public String activateAccount(String token) {
+
+        System.out.println("Received token: '" + token + "'");
+
         Optional<UserEntity> userOpt = userDao.findByActivationToken(token);
+
+        if(userOpt.isPresent()) {
+            System.out.println("User found: " + userOpt.get());
+        } else {
+            System.out.println("No user found for token!");
+        }
+
+
+
 
         // Check if token exists in database
         if (userOpt.isEmpty()) {
@@ -90,22 +102,6 @@ public class AuthenticationService {
 
         return "Account has been successfully activated! You can now log in.";
     }
-
-//    public AuthenticationResponseTO register(RegisterRequestTO request) {
-//        var user = UserEntity.builder()
-//                .firstName(request.getFirstName())
-//                .lastName(request.getLastName())
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
-//                .build();
-//        userDao.save(user);
-//        var jwtToken = jwtService.generateToken(user);
-//        return AuthenticationResponseTO.builder()
-//                .token(jwtToken)
-//                .build();
-//    }
-
     public AuthenticationResponseTO authenticate(AuthenticationRequestTO request) {
         // is user active
         var user = userDao.findByEmail(request.getEmail())
@@ -127,20 +123,5 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
-
-//    public AuthenticationResponseTO authenticate(AuthenticationRequestTO request) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getEmail(),
-//                        request.getPassword()
-//                )
-//        );
-//        var user = userDao.findByEmail(request.getEmail())
-//                .orElseThrow();
-//        var jwtToken = jwtService.generateToken(user);
-//        return AuthenticationResponseTO.builder()
-//                .token(jwtToken)
-//                .build();
-//    }
 
 }

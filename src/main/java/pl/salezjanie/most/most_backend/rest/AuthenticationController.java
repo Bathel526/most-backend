@@ -10,6 +10,7 @@ import pl.salezjanie.most.most_backend.service.AuthenticationService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     private final AuthenticationService service;
